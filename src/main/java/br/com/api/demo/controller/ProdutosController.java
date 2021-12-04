@@ -15,22 +15,25 @@ import br.com.api.demo.repository.ProdutosRepository;
 
 
 
+
 @RestController
 public class ProdutosController {
     
     @Autowired
     private ProdutosRepository produtosRepository;
     
-    @RequestMapping(value = "/produto", method = RequestMethod.GET, produces="application/json")
+    @RequestMapping(value = "/produtos", method = RequestMethod.GET, produces="application/json")
     public List<Produtos> Get() {
         return produtosRepository.findAll();
     }
 
-    @RequestMapping(value = "/produto", method =  RequestMethod.POST, produces="application/json", consumes="application/json")
+    @RequestMapping(value = "/produtos", method =  RequestMethod.POST, produces="application/json", consumes="application/json")
     public Produtos Post( @RequestBody Produtos produto)
     {
         return produtosRepository.save(produto);
     }
+    
+
     
     
     
