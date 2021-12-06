@@ -7,4 +7,5 @@ import br.com.api.demo.modelo.Produtos;
 
 
 public interface ProdutosRepository extends JpaRepository<Produtos, Long>{
+
 }

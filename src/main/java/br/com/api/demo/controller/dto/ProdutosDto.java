@@ -1,8 +1,5 @@
 package br.com.api.demo.controller.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import br.com.api.demo.modelo.Produtos;
 
 public class ProdutosDto {
@@ -32,10 +29,5 @@ public class ProdutosDto {
 	public Double getPreco() {
 		return preco;
 	}
-
-	public static List<ProdutosDto> converter(List<Produtos> produtos) {
-		return produtos.stream().map(ProdutosDto::new).collect(Collectors.toList());
-	}
-	
 	
 }
