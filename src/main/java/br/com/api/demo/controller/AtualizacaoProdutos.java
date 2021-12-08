@@ -1,18 +1,19 @@
 package br.com.api.demo.controller;
 
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import br.com.api.demo.modelo.Produtos;
 import br.com.api.demo.repository.ProdutosRepository;
 
 
 public class AtualizacaoProdutos {
 	
-	
+	@NotNull @NotEmpty
 	private String descricao;
-	
 	private Long id;
-	
 	private String nome;
-	
 	private Double preco;
 
 	public String getDescricao() {
