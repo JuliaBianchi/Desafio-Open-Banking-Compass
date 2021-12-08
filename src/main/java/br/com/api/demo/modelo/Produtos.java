@@ -6,14 +6,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Produtos {
 	
+	@NotBlank(message = "Este campo não pode estar em branco")
 	private String descricao;
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotBlank(message = "Este campo não pode estar em branco")
 	private String nome;
+	@NotNull(message = "Este campo não pode ser nulo")
 	private Double preco;
 	
 	

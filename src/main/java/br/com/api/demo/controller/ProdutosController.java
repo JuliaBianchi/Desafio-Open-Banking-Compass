@@ -2,21 +2,23 @@ package br.com.api.demo.controller;
 
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import br.com.api.demo.modelo.Produtos;
 import br.com.api.demo.repository.ProdutosRepository;
+import br.com.api.demo.validation.NotFoundException;
 
 @RestController
 public class ProdutosController {
@@ -24,53 +26,45 @@ public class ProdutosController {
     @Autowired
     private ProdutosRepository produtosRepository;
     
-    @RequestMapping(value = "/produtos", method = RequestMethod.GET, produces="application/json")
+    @GetMapping("/produtos")
     public List<Produtos> Get() {
         return produtosRepository.findAll();
     }
     
-    @RequestMapping(value = "/produtos/{id}", method = RequestMethod.GET, produces="application/json")
-    public ResponseEntity<Produtos> GetById(@PathVariable(value = "id") long id){
-        Optional<Produtos> produto = produtosRepository.findById(id);
-        if(produto.isPresent()) {
-            return new ResponseEntity<Produtos>(produto.get(), HttpStatus.OK);
-        }
-        	return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @GetMapping("/produtos/{id}")
+    public Produtos GetById(@Valid@PathVariable(value = "id") long id){
+       return this.produtosRepository.findById(id)
+    		   .orElseThrow(() -> new NotFoundException("Produto não encontrado"));
+    
         }
          
-  
-    @RequestMapping(value = "/produtos", method =  RequestMethod.POST, produces="application/json", consumes="application/json")
+    @PostMapping("/produtos")
     @Transactional
     public Produtos Post(@Valid @RequestBody Produtos produto){
-        return produtosRepository.save(produto);
+        return this.produtosRepository.save(produto);
     }
+    
+    @PutMapping("/produtos/{id}")
+    @Transactional
+    public Produtos Put(@PathVariable(value = "id") long id, @Valid @RequestBody AtualizacaoProdutos newProduto){
+        Produtos produto = this.produtosRepository.findById(id)
+        		.orElseThrow(() -> new NotFoundException("Produto não encontrado"));
+        	produto = newProduto.Put(id, produtosRepository);
+            return this.produtosRepository.save(produto);
+    }
+ 
     
 
-    @RequestMapping(value = "/produtos/{id}", method =  RequestMethod.PUT, produces="application/json", consumes="application/json")
+    @DeleteMapping("/produtos/{id}")
     @Transactional
-    public ResponseEntity<Produtos> Put(@PathVariable(value = "id") long id, @Valid @RequestBody AtualizacaoProdutos newProduto){
-        Optional<Produtos> oldProduto = produtosRepository.findById(id);
-        if(oldProduto.isPresent()) {
-        	Produtos produto = newProduto.Put(id, produtosRepository);
-            return new ResponseEntity<Produtos>(produto, HttpStatus.OK);
-        }
-        else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+    public ResponseEntity<Produtos> Delete(@PathVariable(value = "id") long id){
+    	Produtos produtoExistente = this.produtosRepository.findById(id)
+        		.orElseThrow(() -> new NotFoundException("Produto não encontrado"));
+            this.produtosRepository.delete(produtoExistente);
+            return ResponseEntity.ok().build();
     
-    
-    @RequestMapping(value = "/produtos/{id}", method = RequestMethod.DELETE, produces="application/json")
-    @Transactional
-    public ResponseEntity<Object> Delete(@PathVariable(value = "id") long id){
-        Optional<Produtos> produto = produtosRepository.findById(id);
-        if(produto.isPresent()){
-            produtosRepository.delete(produto.get());
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
    
-}
+    }
 
 

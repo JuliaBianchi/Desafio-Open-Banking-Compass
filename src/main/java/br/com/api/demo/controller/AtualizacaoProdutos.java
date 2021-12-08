@@ -1,7 +1,10 @@
 package br.com.api.demo.controller;
 
 
-import javax.validation.constraints.NotEmpty;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import br.com.api.demo.modelo.Produtos;
@@ -10,10 +13,13 @@ import br.com.api.demo.repository.ProdutosRepository;
 
 public class AtualizacaoProdutos {
 	
-	@NotNull @NotEmpty
+	@NotBlank(message = "Este campo não pode estar em branco")
 	private String descricao;
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotBlank(message = "Este campo não pode estar em branco")
 	private String nome;
+	@NotNull(message = "Este campo não pode ser nulo")
 	private Double preco;
 
 	public String getDescricao() {
