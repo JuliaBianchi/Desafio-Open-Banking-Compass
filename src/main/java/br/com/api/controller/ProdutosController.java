@@ -1,4 +1,4 @@
-package br.com.api.demo.controller;
+package br.com.api.controller;
 
 import java.util.List;
 
@@ -16,58 +16,52 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.api.demo.modelo.Produtos;
-import br.com.api.demo.repository.ProdutosRepository;
-import br.com.api.demo.validation.NotFoundException;
+import br.com.api.model.Produtos;
+import br.com.api.service.ProdutosService;
 
 @RestController
 public class ProdutosController {
-    
+
     @Autowired
-    private ProdutosRepository produtosRepository;
+    private ProdutosService produtosService;
     
     @GetMapping("/produtos")
     public List<Produtos> Get() {
-        return this.produtosRepository.findAll();  	
+        return produtosService.findAll();  	
     }
     
     @GetMapping("/produtos/{id}")
     public Produtos GetById(@Valid@PathVariable(value = "id") long id){
-       return this.produtosRepository.findById(id)
-    		   .orElseThrow(() -> new NotFoundException("Produto não encontrado"));
+       return produtosService.findById(id);		   
     }
          
     @PostMapping("/produtos")
     @Transactional
     public Produtos Post(@Valid @RequestBody Produtos produto){
-        return this.produtosRepository.save(produto);
+        return produtosService.create(produto);
     }
     
     @PutMapping("/produtos/{id}")
     @Transactional
     public Produtos Put(@PathVariable(value = "id") long id, @Valid @RequestBody AtualizacaoProdutos newProduto){
-        Produtos produto = this.produtosRepository.findById(id)
-        		.orElseThrow(() -> new NotFoundException("Produto não encontrado"));
-        	produto = newProduto.Put(id, produtosRepository);
-            return this.produtosRepository.save(produto);
+        Produtos produto = produtosService.findById(id);	
+        	produto = newProduto.Put(id, produtosService);
+            return produtosService.save(produto);
     }
 
     @DeleteMapping("/produtos/{id}")
     @Transactional
     public ResponseEntity<Produtos> Delete(@PathVariable(value = "id") long id){
-    	Produtos produtoExistente = this.produtosRepository.findById(id)
-        		.orElseThrow(() -> new NotFoundException("Produto não encontrado"));
-            this.produtosRepository.delete(produtoExistente);
+    	produtosService.findById(id);
+            produtosService.deleteById(id);
             return ResponseEntity.ok().build();
-    	}
+    }
 
     @GetMapping("/produtos/search")
     public List<Produtos> findBySearch(@RequestParam(required = false ,value = "q") 
     String q, @RequestParam(required = false ,value = "minPrice") 
     Double minPrice, @RequestParam(required = false , value = "maxPrice") 
     Double maxPrice){
-        return this.produtosRepository.findBySearch(q, minPrice, maxPrice);
+        return produtosService.findBySearch(q, minPrice, maxPrice);
     }    	
 }
-
-

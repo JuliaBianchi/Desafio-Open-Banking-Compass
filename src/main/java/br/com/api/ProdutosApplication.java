@@ -1,4 +1,4 @@
-package br.com.api.demo;
+package br.com.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,5 +9,4 @@ public class ProdutosApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ProdutosApplication.class, args);
 	}
-
 }

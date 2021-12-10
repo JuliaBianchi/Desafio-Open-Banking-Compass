@@ -1,19 +1,16 @@
-package br.com.api.demo.controller;
-
+package br.com.api.controller;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import br.com.api.demo.modelo.Produtos;
-import br.com.api.demo.repository.ProdutosRepository;
+import br.com.api.model.Produtos;
+import br.com.api.service.ProdutosService;
 import lombok.Data;
 
 @Data
 public class AtualizacaoProdutos {
-	
 	
 	@NotBlank(message = "Este campo não pode estar em branco")
 	private String descricao;
@@ -24,13 +21,12 @@ public class AtualizacaoProdutos {
 	@NotNull(message = "Este campo não pode ser nulo")
 	private Double preco;
 	
-	public Produtos Put(long id, ProdutosRepository produtosRepository) {
-		Produtos produto = produtosRepository.getById(id);
+	public Produtos Put(long id, ProdutosService produtosService) {
+		Produtos produto = produtosService.findById(id);
 		produto.setDescricao(this.descricao);
 		produto.setId(this.id);
 		produto.setNome(this.nome);
 		produto.setPreco(this.preco);
-		
 		return produto;
 	}
 

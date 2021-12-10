@@ -1,4 +1,4 @@
-package br.com.api.demo.modelo;
+package br.com.api.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,19 +7,28 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
 public class Produtos {
+	
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
 	@NotBlank()
 	private String descricao;
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	
 	@NotBlank()
 	private String nome;
+	
 	@NotNull()
 	private Double preco;
-	
+
 }

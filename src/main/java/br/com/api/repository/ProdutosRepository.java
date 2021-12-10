@@ -1,11 +1,11 @@
-package br.com.api.demo.repository;
+package br.com.api.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import br.com.api.demo.modelo.Produtos;
+import br.com.api.model.Produtos;
 
 public interface ProdutosRepository extends JpaRepository<Produtos, Long>{
 	

@@ -1,4 +1,4 @@
-package br.com.api.demo.validation;
+package br.com.api.validation;
 
 public class ErroDeValidacaoDto {
 	
@@ -18,6 +18,4 @@ public class ErroDeValidacaoDto {
 	public String getErro() {
 		return erro;
 	}
-	
-
 }
