@@ -34,7 +34,6 @@ public class ProdutosService {
 	
     public void deleteById(Long id){
         produtosRepository.deleteById(id);
-		
     }
     
     public List<Produtos> findBySearch(@RequestParam(required = false ,value = "q") 
